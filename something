@@ -1,0 +1,23 @@
+(define x 1)
+(define y 2)
+
+(define z (+ 3 4))
+(define p (+ x y))
+
+(define str "something")
+
+(define strlen (php/strlen str))
+
+(php/printf "%s %d\n" str (+ 1 strlen))
+(php/printf "%f\n" (- 1.2 5 10))
+(php/printf "%d\n" (- 1 5 10))
+(php/printf "%d\n" (* 1 5 10))
+(php/printf "%f\n" (/ 1 5 10))
+
+(define ls '(1 2 3))
+(php/print_r (php/array_slice ls 0 2))
+
+(defun strlen-wrapper (str)
+    (php/strlen str))
+
+(php/printf "%d\n" (strlen-wrapper str))
