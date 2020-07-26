@@ -9,10 +9,10 @@
 (define strlen (php/strlen str))
 
 (php/printf "%s %d\n" str (+ 1 strlen))
-(php/printf "%f\n" (- 1.2 5 10))
-(php/printf "%d\n" (- 1 5 10))
-(php/printf "%d\n" (* 1 5 10))
-(php/printf "%f\n" (/ 1 5 10))
+(php/printf "%f\n" (- 1.2 5))
+(php/printf "%d\n" (- 1 5))
+(php/printf "%d\n" (* 1 5))
+(php/printf "%f\n" (/ 1 5))
 
 (define ls '(1 2 3))
 (php/print_r (php/array_slice ls 0 2))
@@ -20,4 +20,9 @@
 (defun strlen-wrapper (str)
     (php/strlen str))
 
+(defun abstract-len-wrapper (f x)
+    (f x))
+
 (php/printf "%d\n" (strlen-wrapper str))
+(php/printf "%d\n" (abstract-len-wrapper strlen-wrapper "kappa"))
+(php/printf "%d\n" (abstract-len-wrapper php/count '(1 2 3)))

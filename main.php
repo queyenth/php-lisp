@@ -1,7 +1,11 @@
 <?php
 declare(strict_types=1);
 
-require_once('Lexer.php');
+require_once('vendor/autoload.php');
+
+use Q\Lisp\Misc\Pair;
+use Q\Lisp\Token\ValueToken;
+use Q\Lisp\Interpreter\Environment;
 
 function usage() {
     echo "Usage: " . $argv[0] . " -r <code>\n";
@@ -11,28 +15,19 @@ function usage() {
 
 // What does Interpretator do?
 // Takes list of tokens and, basically, runs it.
-function run(Maybe $tokens): void {
-    if ($tokens->has_value) {
-        if ($tokens->wrap[0] !== "") {
-            fprintf(STDERR, "%s left unparsed idk\n", $tokens->wrap[0]);
-            exit(1);
+function run(array $tokens): void {
+    $env = new Environment();
+    foreach ($tokens as $token) {
+        $res = $token->evaluate($env);
+        if ($res->has_value) {
+            $env = $res->wrap->first;
         }
-        /*var_dump($tokens->wrap[1]);
-        die;*/
-        // So we should have something like Environment
-        $environment = [];
-        foreach ($tokens->wrap[1] as $token) {
-            $environment = $token->evaluate($environment)[0];
+        else {
+            fprintf(STDERR, "Error happened while evaluating %s\n", get_class($token));
+            fprintf(STDERR, "%s", print_r($token->wrap, true));
         }
-
-        //var_dump($environment);
     }
 }
-
-/*if ($argc !== 2) {
-    echo "Usage: " . $argv[0] . " <code>\n";
-    exit(1);
-}*/
 
 $opts = getopt("f:r:");
 
@@ -56,4 +51,20 @@ if (isset($opts['f'])) {
 elseif (isset($opts['r'])) {
     $code = $opts['r'];
 }
-run(lexer($code));
+
+$data = new Pair(
+    $code,
+    []
+);
+while ($data->first !== "") {
+    $newData = ValueToken::parse($data);
+    if ($newData->has_value) {
+        $data = $newData->wrap;
+    }
+    else {
+        fprintf(STDERR, "Cannot parse something, stopped at %s\n", $data->first);
+        exit(1);
+    }
+}
+
+run($data->second);

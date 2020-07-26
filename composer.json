@@ -1,0 +1,12 @@
+{
+    "name": "queyenth/php-lisp",
+    "version": "1.0.0",
+    "require": {
+        "php": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Q\\Lisp\\": "src/"
+        }
+    }
+}
