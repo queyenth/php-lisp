@@ -53,7 +53,14 @@ class PhpFunction extends IFunction {
                 $envParam = $env->getValue("..." . $param->getName());
                 if ($envParam->has_value) {
                     foreach ($envParam->wrap as $val) {
-                        $args[] = $val->wrap;
+                        if (is_array($val)) {
+                            foreach ($val as $elem) {
+                                $args[] = $elem->wrap;
+                            }
+                        }
+                        elseif ($val) {
+                            $args[] = $val->wrap;
+                        }
                     }
                 }
             }
