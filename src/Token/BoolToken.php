@@ -19,7 +19,7 @@ class BoolToken extends Token {
             if (substr($code, 0, strlen($value)) === $value) {
                 return new Maybe(new Pair(
                     substr($code, strlen($value)),
-                    [...$data->second, self($boolValue)]
+                    [...$data->second, new self($boolValue)]
                 ));
             }
         }
