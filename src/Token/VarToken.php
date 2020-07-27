@@ -30,7 +30,9 @@ class VarToken extends Token {
         $code = trim($data->first);
         $index = 0;
 
-        while ($index < strlen($code) && $code[$index] !== ' ' && $code[$index] !== ')') $index++;
+        $stoppingCharacters = [' ', ')', "\n", "\t", "\r"];
+
+        while ($index < strlen($code) && !in_array($code[$index], $stoppingCharacters)) $index++;
 
         if ($index) {
             return new Maybe(
