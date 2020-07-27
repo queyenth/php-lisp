@@ -32,8 +32,15 @@
 (if (< 6 5) (php/printf "6 is greater than 5\n"))
 
 (defun factorial (x)
-    (if (= x 1)
+    (let (previous_x (- x 1)
+          is_x_1 (= x 1))
+    (if is_x_1
         1
-        (* x (factorial (- x 1)))))
+        (* x (factorial previous_x)))))
 
 (php/printf "%d\n" (factorial 18))
+
+(defun something (x y)
+    (let (z (+ x y)) (* z z)))
+
+(php/printf "%d\n" (something 1 3))

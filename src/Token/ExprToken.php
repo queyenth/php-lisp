@@ -77,6 +77,40 @@ class ExprToken extends Token {
                     fprintf(STDERR, "Cannot evaluate condition for if\n");
                     return new Maybe();
                 }
+            case 'let':
+                $extendedEnv = clone $env;
+                if (isset($args[0]) && ($args[0] instanceof ExprToken)) {
+                    // We have to unwrap exprtoken in order to get key -> value stuff
+                    $letStatements = $args[0]->wrap;
+                    for ($i = 0; $i < count($letStatements); $i+=2) {
+                        $evaluateStatement = $letStatements[$i+1]->evaluate($extendedEnv);
+                        if ($evaluateStatement->has_value) {
+                            $extendedEnv->setValue($letStatements[$i]->wrap, $evaluateStatement->wrap->second);
+                        }
+                        else {
+                            fprintf(STDERR, "Cannot evaluate let statement\n");
+                            return new Maybe();
+                        }
+                    }
+
+                    if (isset($args[1]) && ($args[1] instanceof ExprToken)) {
+                        $evaluated = $args[1]->evaluate($extendedEnv);
+                        if ($evaluated->has_value) {
+                            return new Maybe(
+                                new Pair(
+                                    $env,
+                                    $evaluated->wrap->second
+                                )
+                            );
+                        }
+                        else {
+                            fprintf(STDERR, "Cannot evaluate let body\n");
+                            return new Maybe();
+                        }
+                    }
+                }
+                fprintf(STDERR, "In let first argument should be ExprToken\n");
+                return new Maybe();
             default:
                 fprintf(STDERR, "%s is not a function name\n", $funcName);
                 return new Maybe();
