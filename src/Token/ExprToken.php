@@ -54,6 +54,29 @@ class ExprToken extends Token {
                 }
                 fprintf(STDERR, "Failed to define function %s, args: %s, body: %s\n", $args[0]->wrap, $args[1]->wrap, $args[2]->wrap);
                 return new Maybe();
+            case 'if':
+                if (isset($args[0])) {
+                    $evaluatedCondition = $args[0]->evaluate($env);
+                    if ($evaluatedCondition->has_value) {
+                        $condition = $evaluatedCondition->wrap->second;
+                        $conditionValue = $condition->wrap;
+                        if (!is_bool($conditionValue)) {
+                            $conditionValue = (bool)$conditionValue;
+                        }
+
+                        if ($conditionValue && isset($args[1])) {
+                            return $args[1]->evaluate($env);
+                        }
+                        if (!$conditionValue) {
+                            if(isset($args[2])) {
+                                return $args[2]->evaluate($env);
+                            }
+                            break;
+                        }
+                    }
+                    fprintf(STDERR, "Cannot evaluate condition for if\n");
+                    return new Maybe();
+                }
             default:
                 fprintf(STDERR, "%s is not a function name\n", $funcName);
                 return new Maybe();

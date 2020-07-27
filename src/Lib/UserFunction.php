@@ -7,6 +7,11 @@ use Q\Lisp\Misc\Maybe;
 
 class UserFunction extends IFunction {
     public function evaluate(Environment $env): Maybe {
-        return $this->funcBody->evaluate($env);
+        $evaluated = $this->funcBody->evaluate($env);
+
+        if ($evaluated->has_value) {
+            return new Maybe($evaluated->wrap->second);
+        }
+        return new Maybe();
     }
 }

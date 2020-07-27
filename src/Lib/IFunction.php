@@ -78,7 +78,7 @@ abstract class IFunction {
             return new Maybe(
                 new Pair(
                     $env,
-                    $evaluated->wrap->second
+                    $evaluated->wrap
                 )
             );
         }

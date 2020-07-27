@@ -88,11 +88,6 @@ class PhpFunction extends IFunction {
             $result = new StringToken($result);
         }
 
-        return new Maybe(
-            new Pair(
-                $env,
-                $result
-            )
-        );
+        return new Maybe($result);
     }
 }

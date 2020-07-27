@@ -7,10 +7,10 @@ use Q\Lisp\Misc\Maybe;
 use Q\Lisp\Misc\Pair;
 use Q\Lisp\Interpreter\Environment;
 use Q\Lisp\Token\ExprToken;
+use Q\Lisp\Token\BoolToken;
 use Q\Lisp\Token\VarToken;
-use Q\Lisp\Token\IntToken;
 
-class _Plus extends IFunction {
+class _Equal extends IFunction {
     public function __construct() {
         $this->funcArgs = new ExprToken(
             array(
@@ -22,7 +22,7 @@ class _Plus extends IFunction {
 
     public function evaluate(Environment $env): Maybe {
         return new Maybe(
-            new IntToken($env->getValue('arg1')->wrap->wrap + $env->getValue('arg2')->wrap->wrap)
+            new BoolToken($env->getValue('arg1')->wrap->wrap == $env->getValue('arg2')->wrap->wrap)
         );
     }
 }

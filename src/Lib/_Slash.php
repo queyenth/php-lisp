@@ -22,10 +22,7 @@ class _Slash extends IFunction {
 
     public function evaluate(Environment $env): Maybe {
         return new Maybe(
-            new Pair(
-                $env,
-                new FloatToken($env->getValue('arg1')->wrap->wrap / $env->getValue('arg2')->wrap->wrap)
-            )
+            new FloatToken($env->getValue('arg1')->wrap->wrap / $env->getValue('arg2')->wrap->wrap)
         );
     }
 }
