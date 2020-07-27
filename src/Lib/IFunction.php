@@ -21,7 +21,7 @@ abstract class IFunction {
         $funcArgsUnwrapped = $this->funcArgs->wrap;
         $optionalParameter = false;
 
-        $processedArgs = new Environment();
+        $processedArgs = clone $env;
         $index = 0;
         $variadicPrefix = '...';
         foreach ($funcArgsUnwrapped as $funcArg) {
