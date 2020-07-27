@@ -26,3 +26,7 @@
 (php/printf "%d\n" (strlen-wrapper str))
 (php/printf "%d\n" (abstract-len-wrapper strlen-wrapper "kappa"))
 (php/printf "%d\n" (abstract-len-wrapper php/count '(1 2 3)))
+
+(if (> 6 5) (php/printf "6 is greater than 5\n") (php/printf "5 is greater than 6\n"))
+(if (< 5 6) (php/printf "6 is greater than 5\n") (php/printf "5 is greater than 6\n"))
+(if (< 6 5) (php/printf "6 is greater than 5\n"))
